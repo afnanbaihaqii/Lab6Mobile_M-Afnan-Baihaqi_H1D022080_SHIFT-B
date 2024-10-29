@@ -16,49 +16,40 @@
     <ion-title>{{ folder }}</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">{{ folder }}</ion-title>
     </ion-toolbar>
   </ion-header>
-
   <ion-searchbar placeholder="Search" (ionInput)="handleSearch($event)"></ion-searchbar>
-
   <ion-grid>
     <ion-row>
       <ion-col size="6" size-md="4" *ngFor="let item of filteredItems">
         <ion-card>
           <img [src]="item.image" alt="Image for {{ item.name }}" />
-
           <ion-card-header>
             <ion-card-title>{{ item.name }}</ion-card-title>
             <ion-card-subtitle>Meuble</ion-card-subtitle>
           </ion-card-header>
-
           <ion-card-content>
             <p>Here's a brief description for {{ item.name }}. You can add more details here.</p>
             <p><strong>Stock:</strong> {{ item.stock }}</p>
-
             <ion-row class="ion-justify-content-center">
               <ion-button color="primary" (click)="increaseStock(item)">+</ion-button>
               <ion-button color="light" [disabled]="item.stock === 0" (click)="decreaseStock(item)">-</ion-button>
             </ion-row>
           </ion-card-content>
-
           <ion-row class="ion-justify-content-between ion-padding">
             <ion-button color="success" (click)="onEdit(item)">Edit</ion-button>
             <ion-button color="danger" (click)="onDelete(item)">Delete</ion-button>
           </ion-row>
-
           <input type="file" (change)="onImageSelected($event, item)" hidden #fileInput />
           <ion-button color="primary" expand="block" (click)="fileInput.click()">Upload Image</ion-button>
         </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
-
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="addItem()">
       <ion-icon name="add"></ion-icon>
@@ -72,7 +63,6 @@ memanfaatkan <input type="file">. Di bagian bawah layar, ion-fab berfungsi sebag
 
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-
 @Component({
   selector: 'app-folder',
   templateUrl: './folder.page.html',
@@ -86,16 +76,12 @@ export class FolderPage implements OnInit {
     { name: 'Item 3', image: 'assets/placeholder-image.jpg', stock: 8 }
   ];
   filteredItems = [...this.items];
-
   constructor(private alertController: AlertController) {}
-
   ngOnInit() {}
-
   handleSearch(event: any) {
     const query = event.target.value.toLowerCase();
     this.filteredItems = this.items.filter(item => item.name.toLowerCase().includes(query));
   }
-
   async onEdit(item: any) {
     const alert = await this.alertController.create({
       header: 'Edit Item',
@@ -126,15 +112,12 @@ export class FolderPage implements OnInit {
         }
       ]
     });
-
     await alert.present();
   }
-
   onDelete(item: any) {
     this.items = this.items.filter(i => i !== item);
     this.filteredItems = [...this.items];
   }
-
   async addItem() {
     const alert = await this.alertController.create({
       header: 'Add New Item',
@@ -170,10 +153,8 @@ export class FolderPage implements OnInit {
         }
       ]
     });
-
     await alert.present();
   }
-
   onImageSelected(event: any, item: any) {
     const file = event.target.files[0];
     if (file) {
@@ -185,12 +166,10 @@ export class FolderPage implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-
   increaseStock(item: any) {
     item.stock++;
     this.filteredItems = [...this.items];
   }
-
   decreaseStock(item: any) {
     if (item.stock > 0) {
       item.stock--;
