@@ -14,8 +14,44 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong class="capitalize">{{ folder }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-searchbar placeholder="Search" (ionInput)="handleSearch($event)"></ion-searchbar>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" size-md="4" *ngFor="let item of filteredItems">
+        <ion-card>
+          <img [src]="item.image" alt="Image for {{ item.name }}" />
+
+          <ion-card-header>
+            <ion-card-title>{{ item.name }}</ion-card-title>
+            <ion-card-subtitle>Meuble</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>Here's a brief description for {{ item.name }}. You can add more details here.</p>
+            <p><strong>Stock:</strong> {{ item.stock }}</p>
+
+            <ion-row class="ion-justify-content-center">
+              <ion-button color="primary" (click)="increaseStock(item)">+</ion-button>
+              <ion-button color="light" [disabled]="item.stock === 0" (click)="decreaseStock(item)">-</ion-button>
+            </ion-row>
+          </ion-card-content>
+
+          <ion-row class="ion-justify-content-between ion-padding">
+            <ion-button color="success" (click)="onEdit(item)">Edit</ion-button>
+            <ion-button color="danger" (click)="onDelete(item)">Delete</ion-button>
+          </ion-row>
+
+          <input type="file" (change)="onImageSelected($event, item)" hidden #fileInput />
+          <ion-button color="primary" expand="block" (click)="fileInput.click()">Upload Image</ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addItem()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
